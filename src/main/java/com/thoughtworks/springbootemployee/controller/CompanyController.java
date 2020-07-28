@@ -55,4 +55,15 @@ public class CompanyController {
         }
         return null;
     }
+
+    // todo unfinished
+    @GetMapping()
+    public List<Employee> getEmployeesOfCompanyByPage(@PathVariable("page") int page, @PathVariable("pageSize") int pageSize) {
+        List<Company> companies = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            companies.add(new Company(i + 1, "oocl" + (i + 1)));
+        }
+
+        return null;
+    }
 }
