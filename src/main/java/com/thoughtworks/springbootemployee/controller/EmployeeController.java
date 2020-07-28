@@ -13,20 +13,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private List<Employee> getEmployeesData() {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(4, "tom1", 20, "male", 6000));
-        employees.add(new Employee(5, "tom2", 20, "female", 6001));
-        employees.add(new Employee(6, "tom3", 20, "male", 6002));
-        employees.add(new Employee(7, "tom4", 20, "male", 6003));
-        return employees;
-    }
-
     @GetMapping
-    public List<Employee> getAllEmployees(@RequestParam(value = "gender", required = false) String gender) {
+    public List<Employee> getAllEmployees(@RequestParam(value = "gender", required = false) String gender,
+                                          @RequestParam(value = "page", required = false) Integer page,
+                                          @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         List<Employee> employees = getEmployeesData();
-        if (!gender.isEmpty()) {
+        if (Objects.nonNull(gender) && !gender.isEmpty()) {
             employees = employees.stream().filter(employee -> gender.equals(employee.getGender())).collect(Collectors.toList());
+        }
+        if (Objects.nonNull(page) && Objects.nonNull(pageSize)) {
+            employees = employees.stream().skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
         }
         return employees;
     }
@@ -52,7 +48,6 @@ public class EmployeeController {
         return "employee is null";
     }
 
-    // todo 405
     @PutMapping("/{id}")
     public String updateEmployeeById(@PathVariable Integer id, Employee newEmployee) {
         List<Employee> employees = getEmployeesData();
@@ -70,9 +65,21 @@ public class EmployeeController {
     public String deleteEmployeeById(@PathVariable int id) {
         List<Employee> employees = getEmployeesData();
         Employee findEmployeeById = employees.stream().filter(employee -> id == employee.getId()).findFirst().get();
-        if(employees.remove(findEmployeeById)){
+        if (employees.remove(findEmployeeById)) {
             return "delete success";
         }
         return "delete failed";
+    }
+
+    private List<Employee> getEmployeesData() {
+        List<Employee> employees = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            String gender = "male";
+            if (i % 2 == 0) {
+                gender = "female";
+            }
+            employees.add(new Employee(i + 1, "tom" + (i + 1), 20 + (i + 1), gender, 6000 + (i + 1)));
+        }
+        return employees;
     }
 }
