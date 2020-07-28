@@ -26,12 +26,7 @@ public class CompanyController {
     @GetMapping("/{companyId}")
     public Company getCompanyByNumber(@PathVariable int companyId) {
         List<Company> companies = getCompaniesData();
-        for (Company company : companies) {
-            if (companyId == company.getCompanyId()) {
-                return company;
-            }
-        }
-        return null;
+        return companies.stream().filter(company -> companyId == company.getCompanyId()).findFirst().orElse(null);
     }
 
     @GetMapping("/{companyId}/employees")
@@ -57,36 +52,26 @@ public class CompanyController {
         return "add success!";
     }
 
-    // todo bad request
     @PutMapping("/{companyId}")
-    public String updateCompanyByNumber(@PathVariable Integer companyId, @RequestParam("companyName") String companyName) {
+    public String updateCompanyByNumber(@PathVariable Integer companyId, Company newCompany) {
         List<Company> companies = getCompaniesData();
-        Company company = null;
-        for (Company tempCompany : companies) {
-            if (companyId == tempCompany.getCompanyId()) {
-                company = tempCompany;
-            }
-        }
-        if (Objects.isNull(company)) {
+        Optional<Company> companyOptional = companies.stream().filter(tempCompany -> tempCompany.getCompanyId() == companyId).findFirst();
+        if (!companyOptional.isPresent()) {
             return "companyId is not exist";
         }
-        company.setCompanyName(companyName);
+        companies.remove(companyOptional.get());
+        companies.add(newCompany);
         return "update success!";
     }
 
     @DeleteMapping("/{companyId}")
-    public String deleteCompanyById(@PathVariable int companyId) {
-        List<Company> companies = getCompaniesData();
-        int deleteIndex = -1;
-        for (Company company : companies) {
-            if (companyId == company.getCompanyId()) {
-                deleteIndex = companies.indexOf(company);
-            }
-        }
-        if (deleteIndex < 0) {
+    public String deleteCompanyById(@PathVariable Integer companyId) {
+        if (Objects.isNull(companyId)) {
             return "companyId is not exist";
         }
-        companies.remove(deleteIndex);
+        List<Company> companies = getCompaniesData();
+        Company company = companies.stream().filter(tempCompany -> companyId == tempCompany.getCompanyId()).findFirst().orElse(null);
+        companies.remove(company);
         return "delete success!";
     }
 
