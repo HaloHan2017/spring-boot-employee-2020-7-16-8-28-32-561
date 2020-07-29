@@ -16,16 +16,21 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+//    @GetMapping
+//    public List<Employee> getEmployeesByConditions(@RequestParam(value = "gender", required = false) String gender,
+//                                                   @RequestParam(value = "page", required = false) Integer page,
+//                                                   @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+//
+////        employeeService.g(gender, page, pageSize);/
+//
+////        List<Employee> employees = getEmployeesData();0
+//
+//        return null;
+//    }
+
     @GetMapping
-    public List<Employee> getEmployeesByConditions(@RequestParam(value = "gender", required = false) String gender,
-                                                   @RequestParam(value = "page", required = false) Integer page,
-                                                   @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-
-//        employeeService.g(gender, page, pageSize);/
-
-//        List<Employee> employees = getEmployeesData();0
-
-        return null;
+    public List<Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
 
     @GetMapping("/{id}")

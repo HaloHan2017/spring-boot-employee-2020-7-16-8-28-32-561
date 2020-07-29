@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,15 +83,19 @@ public class EmployeeServiceTest {
         // assertEquals(employeeDataList.size(), employees.size());
     }
 
-//    private List<Employee> getEmployeeDataList() {
-//        List<Employee> employeeDataList = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            String gender = "male";
-//            if (i % 2 == 0) {
-//                gender = "female";
-//            }
-//            employeeDataList.add(new Employee(i + 1, "tom" + (i + 1), 20 + (i + 1), gender, 6000 + (i + 1)));
-//        }
-//        return employeeDataList;
-//    }
+    @Test
+    void should_return_employees_when_get_all_employee_given_no_parameter() {
+        // given
+        EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
+        given(mockedEmployeeRepository.findAll()).willReturn(
+                Arrays.asList(new Employee(2, "bruno", 20, "male", 2000),
+                        new Employee(3, "xiaosun", 21, "male", 5000)));
+        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
+        // when
+        List<Employee> employees = employeeService.getAllEmployees();
+        // then
+        assertEquals(2, employees.size());
+    }
 }
+
+
