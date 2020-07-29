@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -44,5 +45,9 @@ public class EmployeeService {
             return 1;
         }
         return -1;
+    }
+
+    public List<Employee> getEmployeeByConditions(String  condition) {
+        return null;
     }
 }

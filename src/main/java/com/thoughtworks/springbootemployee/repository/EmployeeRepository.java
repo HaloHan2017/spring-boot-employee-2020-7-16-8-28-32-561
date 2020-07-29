@@ -43,4 +43,8 @@ public class EmployeeRepository {
         }
         return false;
     }
+
+    public List<Employee> getEmployeeByConditions(String condition) {
+        return null;
+    }
 }

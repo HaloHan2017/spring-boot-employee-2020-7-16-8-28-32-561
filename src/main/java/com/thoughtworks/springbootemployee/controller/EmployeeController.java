@@ -20,7 +20,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAllEmployees(@RequestParam(value = "gender", required = false) String gender,
+    public List<Employee> getEmployeesByConditions(@RequestParam(value = "gender", required = false) String gender,
                                           @RequestParam(value = "page", required = false) Integer page,
                                           @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         List<Employee> employees = getEmployeesData();
