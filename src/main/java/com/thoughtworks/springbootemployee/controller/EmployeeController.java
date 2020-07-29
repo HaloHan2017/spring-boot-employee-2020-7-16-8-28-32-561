@@ -4,10 +4,7 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -21,16 +18,14 @@ public class EmployeeController {
 
     @GetMapping
     public List<Employee> getEmployeesByConditions(@RequestParam(value = "gender", required = false) String gender,
-                                          @RequestParam(value = "page", required = false) Integer page,
-                                          @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        List<Employee> employees = getEmployeesData();
-        if (Objects.nonNull(gender) && !gender.isEmpty()) {
-            employees = employees.stream().filter(employee -> gender.equals(employee.getGender())).collect(Collectors.toList());
-        }
-        if (Objects.nonNull(page) && Objects.nonNull(pageSize)) {
-            employees = employees.stream().skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
-        }
-        return employees;
+                                                   @RequestParam(value = "page", required = false) Integer page,
+                                                   @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+
+//        employeeService.g(gender, page, pageSize);/
+
+//        List<Employee> employees = getEmployeesData();0
+
+        return null;
     }
 
     @GetMapping("/{id}")
@@ -39,11 +34,8 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public String addEmployee(Employee employee) {
-        if (employeeService.addEmployee(employee) > 0) {
-            return " add success";
-        }
-        return " add failed";
+    public Employee addEmployee(@RequestBody Employee employee) {
+        return employeeService.addEmployee(employee);
     }
 
     @PutMapping("/{id}")
@@ -52,22 +44,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteEmployeeById(@PathVariable Integer id) {
-        if (employeeService.deleteEmployeeById(id) > 0) {
-            return " delete success";
-        }
-        return " delete failed";
-    }
-
-    private List<Employee> getEmployeesData() {
-        List<Employee> employees = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            String gender = "male";
-            if (i % 2 == 0) {
-                gender = "female";
-            }
-            employees.add(new Employee(i + 1, "tom" + (i + 1), 20 + (i + 1), gender, 6000 + (i + 1)));
-        }
-        return employees;
+    public void deleteEmployeeById(@PathVariable Integer id) {
+        employeeService.deleteEmployeeById(id);
     }
 }

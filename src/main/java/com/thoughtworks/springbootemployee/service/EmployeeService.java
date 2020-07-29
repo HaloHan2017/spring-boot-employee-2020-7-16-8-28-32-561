@@ -3,10 +3,12 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -18,36 +20,32 @@ public class EmployeeService {
     }
 
     public Employee updateEmployeeById(int id, Employee updatedEmployee) {
-        Employee employee = employeeRepository.findEmployeeById(id);
-        BeanUtils.copyProperties(updatedEmployee, employee, "id");
-        return employee;
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if (employeeOptional.isPresent()) {
+            Employee employee = employeeOptional.get();
+            BeanUtils.copyProperties(updatedEmployee, employee, "id");
+            return employeeRepository.save(employee);
+        }
+        return null;
     }
 
     public Employee getEmployeeById(Integer id) {
-        if (Objects.isNull(id)) {
-            return null;
-        }
-        return employeeRepository.findEmployeeById(id);
+        return employeeRepository.findById(id).get();
     }
 
-    public int addEmployee(Employee employee) {
-        if (employeeRepository.addEmployee(employee)) {
-            return 1;
-        }
-        return  -1;
+    public Employee addEmployee(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
-    public int deleteEmployeeById(Integer id) {
-        if(Objects.isNull(id)){
-            return -1;
-        }
-        if(employeeRepository.deleteEmployeeById(id)){
-            return 1;
-        }
-        return -1;
+    public void deleteEmployeeById(Integer id) {
+        employeeRepository.deleteById(id);
     }
 
-    public List<Employee> getEmployeeByConditions(String  condition) {
-        return null;
+    public List<Employee> getEmployeesByGender(String gender) {
+        return employeeRepository.findByGender(gender);
+    }
+
+    public Page<Employee> getEmployeesByPage(Integer page, Integer pageSize) {
+        return employeeRepository.findAll(PageRequest.of(page, pageSize));
     }
 }
