@@ -21,6 +21,12 @@ public class Company {
         this.companyName = companyName;
     }
 
+    public Company(int companyId, String companyName, List<Employee> employees) {
+        this.companyId = companyId;
+        this.companyName = companyName;
+        this.employees = employees;
+    }
+
     public String getCompanyName() {
         return companyName;
     }
