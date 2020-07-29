@@ -20,4 +20,8 @@ public class EmployeeService {
         BeanUtils.copyProperties(updatedEmployee, employee, "id");
         return employee;
     }
+
+    public Employee getEmployeeById(int id) {
+        return null;
+    }
 }
