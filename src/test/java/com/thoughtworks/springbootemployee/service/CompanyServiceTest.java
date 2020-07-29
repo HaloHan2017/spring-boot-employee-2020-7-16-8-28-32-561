@@ -44,4 +44,24 @@ public class CompanyServiceTest {
         // then
         assertEquals("alibaba", company.getCompanyName());
     }
+
+    @Test
+    void should_return_company_when_add_company_given_company() {
+        // given
+        Company company = new Company(1, "alibaba",
+                Arrays.asList(new Employee(1, "sss", 20, "male", 200),
+                        new Employee(2, "fff", 50, "male", 5000)));
+        CompanyRepository mockedCompanyRepository = mock(CompanyRepository.class);
+        given(mockedCompanyRepository.save(company)).willReturn(
+                new Company(1, "alibaba",
+                        Arrays.asList(new Employee(1, "sss", 20, "male", 200),
+                                new Employee(2, "fff", 50, "male", 5000))));
+        CompanyService companyService = new CompanyService(mockedCompanyRepository);
+
+        // when
+        Company newCompany = companyService.addCompany(company);
+
+        // then
+        assertEquals(company.getCompanyName(), newCompany.getCompanyName());
+    }
 }

@@ -16,10 +16,14 @@ public class CompanyService {
     }
 
     public List<Company> getAllCompanies() {
-        return  companyRepository.findAll();
+        return companyRepository.findAll();
     }
 
-    public Company findCompanyById(int i) {
+    public Company findCompanyById(Integer id) {
+        return companyRepository.findById(id).orElse(null);
+    }
+
+    public Company addCompany(Company company) {
         return  null;
     }
 }
