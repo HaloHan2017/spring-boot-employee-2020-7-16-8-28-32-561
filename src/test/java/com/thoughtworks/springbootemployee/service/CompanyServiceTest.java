@@ -107,8 +107,6 @@ public class CompanyServiceTest {
                 willReturn(new PageImpl<>(Arrays.asList(new Company(1, "alibaba"),
                         new Company(2, "tencent"))));
         CompanyService companyService = new CompanyService(mockCompanyRepository);
-
-
         // when
         List<Company> companies = companyService.getCompaniesByRange(1, 2).toList();
         // then
