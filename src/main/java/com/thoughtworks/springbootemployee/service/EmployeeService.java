@@ -30,6 +30,13 @@ public class EmployeeService {
     }
 
     public int addEmployee(Employee employee) {
+        if (employeeRepository.addEmployee(employee)) {
+            return 1;
+        }
+        return  -1;
+    }
+
+    public int deleteEmployeeById(Integer id) {
         return -1;
     }
 }

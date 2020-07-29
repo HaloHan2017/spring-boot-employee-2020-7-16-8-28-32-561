@@ -22,11 +22,16 @@ public class EmployeeRepository {
         return employees;
     }
 
-    public Employee findEmployeeById(int id) {
+    public Employee findEmployeeById(Integer id) {
         return employeeDataList.stream().filter(employee -> employee.getId() == id).findFirst().get();
     }
 
-    public int addEmployee(Employee employee) {
-        return -1;
+    public boolean addEmployee(Employee employee) {
+        employee.setId(this.employeeDataList.size() + 1);
+        return this.employeeDataList.add(employee);
     }
-}
+
+    public boolean deleteEmployeeById(Integer id) {
+        return false;
+
+    }}

@@ -40,12 +40,10 @@ public class EmployeeController {
 
     @PostMapping
     public String addEmployee(Employee employee) {
-        List<Employee> employees = getEmployeesData();
-        if (!Objects.isNull(employee)) {
-            employees.add(employee);
-            return "add success";
-        }
-        return "employee is null";
+       if (employeeService.addEmployee(employee) > 0) {
+           return " add success";
+       }
+       return " add failed";
     }
 
     @PutMapping("/{id}")

@@ -38,14 +38,27 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_1_when_add_employee__given_employee() {
+    void should_return_1_when_add_employee_given_employee() {
         // given
         Employee employee = new Employee();
         EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
-        given(mockedEmployeeRepository.addEmployee(employee)).willReturn(1);
+        given(mockedEmployeeRepository.addEmployee(employee)).willReturn(true);
         EmployeeService employeeService = new EmployeeService(new EmployeeRepository());
         // when
         int result = employeeService.addEmployee(employee);
+        // then
+        assertEquals(1,result);
+    }
+
+    @Test
+    void should_return_1_when_delete_employee_by_id_given_employee_id() {
+        // given
+        EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
+        given(mockedEmployeeRepository.deleteEmployeeById(1)).willReturn(true);
+        EmployeeService employeeService = new EmployeeService(new EmployeeRepository());
+        // when
+        int result = employeeService.deleteEmployeeById(1);
+
         // then
         assertEquals(1,result);
     }
