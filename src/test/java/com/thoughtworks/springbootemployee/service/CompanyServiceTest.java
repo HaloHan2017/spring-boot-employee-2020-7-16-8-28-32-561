@@ -5,6 +5,8 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +44,7 @@ public class CompanyServiceTest {
         CompanyService companyService = new CompanyService(mockedCompanyRepository);
 
         // when
-        Company company = companyService.findCompanyById(1);
+        Company company = companyService.getCompanyById(1);
 
         // then
         assertEquals("alibaba", company.getCompanyName());
@@ -93,5 +95,23 @@ public class CompanyServiceTest {
         companyService.deleteCompanyById(1);
         // then
         verify(mockedCompanyRepository).deleteById(any());
+    }
+
+    //    @MockBean
+//    CompanyRepository companyRepository;
+    @Test
+    void should_return_companies_when_get_companies_by_range_given_page_and_pageSize() {
+        // given
+        CompanyRepository mockCompanyRepository = mock(CompanyRepository.class);
+        given(mockCompanyRepository.findAll(PageRequest.of(1,2))).
+                willReturn(new PageImpl<>(Arrays.asList(new Company(1, "alibaba"),
+                        new Company(2, "tencent"))));
+        CompanyService companyService = new CompanyService(mockCompanyRepository);
+
+
+        // when
+        List<Company> companies = companyService.getCompaniesByRange(1, 2).toList();
+        // then
+        assertEquals(2, companies.size());
     }
 }
