@@ -37,6 +37,12 @@ public class EmployeeService {
     }
 
     public int deleteEmployeeById(Integer id) {
+        if(Objects.isNull(id)){
+            return -1;
+        }
+        if(employeeRepository.deleteEmployeeById(id)){
+            return 1;
+        }
         return -1;
     }
 }

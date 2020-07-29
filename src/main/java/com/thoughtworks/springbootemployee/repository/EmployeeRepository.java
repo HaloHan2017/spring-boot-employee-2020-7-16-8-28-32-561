@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class EmployeeRepository {
@@ -23,7 +24,11 @@ public class EmployeeRepository {
     }
 
     public Employee findEmployeeById(Integer id) {
-        return employeeDataList.stream().filter(employee -> employee.getId() == id).findFirst().get();
+        Optional<Employee> employeeOptional = employeeDataList.stream().filter(employee -> employee.getId() == id).findFirst();
+        if(employeeOptional.isPresent()){
+            return employeeOptional.get();
+        }
+        return null;
     }
 
     public boolean addEmployee(Employee employee) {
@@ -32,6 +37,10 @@ public class EmployeeRepository {
     }
 
     public boolean deleteEmployeeById(Integer id) {
+        Optional<Employee> employeeOptional = employeeDataList.stream().filter(employee -> employee.getId() == id).findFirst();
+        if (employeeOptional.isPresent()) {
+            return employeeDataList.remove(employeeOptional.get());
+        }
         return false;
-
-    }}
+    }
+}

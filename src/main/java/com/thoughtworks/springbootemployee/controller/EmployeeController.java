@@ -40,10 +40,10 @@ public class EmployeeController {
 
     @PostMapping
     public String addEmployee(Employee employee) {
-       if (employeeService.addEmployee(employee) > 0) {
-           return " add success";
-       }
-       return " add failed";
+        if (employeeService.addEmployee(employee) > 0) {
+            return " add success";
+        }
+        return " add failed";
     }
 
     @PutMapping("/{id}")
@@ -52,13 +52,11 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteEmployeeById(@PathVariable int id) {
-        List<Employee> employees = getEmployeesData();
-        Employee findEmployeeById = employees.stream().filter(employee -> id == employee.getId()).findFirst().get();
-        if (employees.remove(findEmployeeById)) {
-            return "delete success";
+    public String deleteEmployeeById(@PathVariable Integer id) {
+        if (employeeService.deleteEmployeeById(id) > 0) {
+            return " delete success";
         }
-        return "delete failed";
+        return " delete failed";
     }
 
     private List<Employee> getEmployeesData() {
