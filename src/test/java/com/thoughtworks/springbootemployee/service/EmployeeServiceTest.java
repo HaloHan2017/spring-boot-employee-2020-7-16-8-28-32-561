@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -22,16 +23,14 @@ public class EmployeeServiceTest {
         // given
         Employee employee = new Employee(1, "lisi", 15, "female", 12200);
         EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
-        given(mockedEmployeeRepository.findById(1)).willReturn(Optional.of(new Employee(1, "zhangsan", 12, "male", 1200)));
-        given(mockedEmployeeRepository.save(employee)).willReturn(employee);
+        given(mockedEmployeeRepository.findById(anyInt())).willReturn(Optional.of(new Employee(1, "zhangsan", 12, "male", 1200)));
+        given(mockedEmployeeRepository.save(any())).willReturn(employee);
         EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
         // when
         Employee employeeResult = employeeService.updateEmployeeById(1, employee);
         // then
         assertEquals(1, employeeResult.getId());
         assertEquals("lisi", employeeResult.getName());
-//        verify(mockedEmployeeRepository).findById(any());
-//        verify(mockedEmployeeRepository).save(any());
     }
 
     @Test

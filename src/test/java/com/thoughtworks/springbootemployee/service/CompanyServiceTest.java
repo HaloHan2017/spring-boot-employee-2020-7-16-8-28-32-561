@@ -3,7 +3,6 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -14,9 +13,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class CompanyServiceTest {
     @Test
@@ -42,10 +41,8 @@ public class CompanyServiceTest {
                         Arrays.asList(new Employee(1, "sss", 20, "male", 200),
                                 new Employee(2, "fff", 50, "male", 5000)))));
         CompanyService companyService = new CompanyService(mockedCompanyRepository);
-
         // when
         Company company = companyService.getCompanyById(1);
-
         // then
         assertEquals("alibaba", company.getCompanyName());
     }
@@ -62,39 +59,24 @@ public class CompanyServiceTest {
                         Arrays.asList(new Employee(1, "sss", 20, "male", 200),
                                 new Employee(2, "fff", 50, "male", 5000))));
         CompanyService companyService = new CompanyService(mockedCompanyRepository);
-
         // when
         Company newCompany = companyService.addCompany(company);
-
         // then
         assertEquals(company.getCompanyName(), newCompany.getCompanyName());
     }
 
     @Test
-    void should_return_company_when_update_company_given_company_id_and_company() {
-        // given
-        Company company = new Company(1, "alibaba",
-                Arrays.asList(new Employee(1, "sss", 20, "male", 200),
-                        new Employee(2, "fff", 50, "male", 5000)));
-        CompanyRepository mockedCompanyRepository = mock(CompanyRepository.class);
-
-        // when
-        // then
-
-    }
-
-    @Test
     void should_return_void_when_update_company_given_company_id_and_company() {
         // given
-        Company company = new Company(1, "alibaba",
-                Arrays.asList(new Employee(1, "sss", 20, "male", 200),
-                        new Employee(2, "fff", 50, "male", 5000)));
+        Company company = new Company(1, "alibaba");
         CompanyRepository mockedCompanyRepository = mock(CompanyRepository.class);
+        given(mockedCompanyRepository.findById(anyInt())).willReturn(Optional.of(new Company(1, "tencent")));
+        given(mockedCompanyRepository.save(any())).willReturn(company);
         CompanyService companyService = new CompanyService(mockedCompanyRepository);
         // when
-        companyService.deleteCompanyById(1);
+        Company updatedCompany = companyService.updateCompanyById(1, company);
         // then
-        verify(mockedCompanyRepository).deleteById(any());
+        assertEquals(company.getCompanyName(), updatedCompany.getCompanyName());
     }
 
     //    @MockBean
@@ -103,7 +85,7 @@ public class CompanyServiceTest {
     void should_return_companies_when_get_companies_by_range_given_page_and_pageSize() {
         // given
         CompanyRepository mockCompanyRepository = mock(CompanyRepository.class);
-        given(mockCompanyRepository.findAll(PageRequest.of(1,2))).
+        given(mockCompanyRepository.findAll(PageRequest.of(1, 2))).
                 willReturn(new PageImpl<>(Arrays.asList(new Company(1, "alibaba"),
                         new Company(2, "tencent"))));
         CompanyService companyService = new CompanyService(mockCompanyRepository);
