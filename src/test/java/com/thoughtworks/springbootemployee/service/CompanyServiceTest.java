@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -10,8 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class CompanyServiceTest {
     @Test
@@ -63,5 +66,32 @@ public class CompanyServiceTest {
 
         // then
         assertEquals(company.getCompanyName(), newCompany.getCompanyName());
+    }
+
+    @Test
+    void should_return_company_when_update_company_given_company_id_and_company() {
+        // given
+        Company company = new Company(1, "alibaba",
+                Arrays.asList(new Employee(1, "sss", 20, "male", 200),
+                        new Employee(2, "fff", 50, "male", 5000)));
+        CompanyRepository mockedCompanyRepository = mock(CompanyRepository.class);
+
+        // when
+        // then
+
+    }
+
+    @Test
+    void should_return_void_when_update_company_given_company_id_and_company() {
+        // given
+        Company company = new Company(1, "alibaba",
+                Arrays.asList(new Employee(1, "sss", 20, "male", 200),
+                        new Employee(2, "fff", 50, "male", 5000)));
+        CompanyRepository mockedCompanyRepository = mock(CompanyRepository.class);
+        CompanyService companyService = new CompanyService(mockedCompanyRepository);
+        // when
+        companyService.deleteCompanyById(1);
+        // then
+        verify(mockedCompanyRepository).deleteById(any());
     }
 }

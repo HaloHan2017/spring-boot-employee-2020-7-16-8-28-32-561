@@ -26,4 +26,8 @@ public class CompanyService {
     public Company addCompany(Company company) {
         return companyRepository.save(company);
     }
+
+    public void deleteCompanyById(Integer id) {
+        companyRepository.deleteById(id);
+    }
 }
