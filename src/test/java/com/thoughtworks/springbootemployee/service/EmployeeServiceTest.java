@@ -73,14 +73,15 @@ public class EmployeeServiceTest {
     void should_return_employees_when_get_employees_by_gender_given_gender() {
         // given
         EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
-//        List<Employee> employeeDataList = getEmployeeDataList();
-        given(mockedEmployeeRepository.findByGender("gender")).willReturn(Arrays.asList());
+        given(mockedEmployeeRepository.findByGender("male")).willReturn(Arrays.asList(new Employee(2, "bruno", 20, "male", 2000),
+                new Employee(3, "xiaosun", 21, "male", 5000)));
         EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
 
         // when
-//        List<Employee> employees = employeeService.getEmployeeByConditions(null);
+        List<Employee> employees = employeeService.getEmployeesByGender("male");
+
         // then
-        // assertEquals(employeeDataList.size(), employees.size());
+        assertEquals(2, employees.size());
     }
 
     @Test
@@ -96,6 +97,7 @@ public class EmployeeServiceTest {
         // then
         assertEquals(2, employees.size());
     }
+
 }
 
 
