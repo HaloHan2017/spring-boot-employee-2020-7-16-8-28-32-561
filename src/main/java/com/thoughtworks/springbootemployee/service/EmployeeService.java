@@ -21,7 +21,6 @@ public class EmployeeService {
     public Employee updateEmployeeById(int id, Employee updatedEmployee) {
         Employee employee = employeeRepository.findById(id).orElse(null);
         if (Objects.nonNull(employee)) {
-//            BeanUtils.copyProperties(updatedEmployee, employee, "id");
             employee.setName(updatedEmployee.getName());
             employee.setAge(updatedEmployee.getAge());
             employee.setGender(updatedEmployee.getGender());
@@ -60,11 +59,9 @@ public class EmployeeService {
         if (Objects.nonNull(gender) && !gender.isEmpty()) {
             employees = getEmployeesByGender(gender);
         }
-        if (Objects.nonNull(page) && Objects.nonNull(pageSize)) {
-            Page<Employee> employeesByPage = getEmployeesByPage(page, pageSize);
-            if (Objects.nonNull(employeesByPage)) {
-                employees = employeesByPage.getContent();
-            }
+        Page<Employee> employeesByPage = getEmployeesByPage(page, pageSize);
+        if (Objects.nonNull(page) && Objects.nonNull(pageSize) && Objects.nonNull(employeesByPage)) {
+            employees = employeesByPage.getContent();
         }
         return employees;
     }

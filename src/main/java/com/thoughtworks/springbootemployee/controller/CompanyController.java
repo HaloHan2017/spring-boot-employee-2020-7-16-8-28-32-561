@@ -26,11 +26,6 @@ public class CompanyController {
         return companyService.getCompanyById(companyId);
     }
 
-//    @GetMapping("/{companyId}/employees")
-//    public List<Employee> getEmployeesOfCompanyByNumber(@PathVariable int companyId) {
-//        return null;
-//    }
-
     @PostMapping()
     public Company addCompany(@RequestBody Company company) {
         return companyService.addCompany(company);

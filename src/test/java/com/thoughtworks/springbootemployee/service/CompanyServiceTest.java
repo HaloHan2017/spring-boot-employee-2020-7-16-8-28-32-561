@@ -79,8 +79,6 @@ public class CompanyServiceTest {
         assertEquals(company.getCompanyName(), updatedCompany.getCompanyName());
     }
 
-    //    @MockBean
-//    CompanyRepository companyRepository;
     @Test
     void should_return_companies_when_get_companies_by_range_given_page_and_pageSize() {
         // given

@@ -2,7 +2,6 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -41,19 +40,16 @@ public class CompanyService {
 
     public List<Company> getCompaniesByConditions(Integer page, Integer pageSize) {
         List<Company> companies = getAllCompanies();
-        if(Objects.nonNull(page) && Objects.nonNull(pageSize)){
-            Page<Company> companiesByRange = getCompaniesByRange(page, pageSize);
-            if(Objects.nonNull(companiesByRange)){
-                companies = companiesByRange.getContent();
-            }
+        Page<Company> companiesByRange = getCompaniesByRange(page, pageSize);
+        if (Objects.nonNull(page) && Objects.nonNull(pageSize) && Objects.nonNull(companiesByRange)) {
+            companies = companiesByRange.getContent();
         }
         return companies;
     }
 
     public Company updateCompanyById(Integer id, Company updateCompany) {
         Company company = companyRepository.findById(id).orElse(null);
-        if(Objects.nonNull(company)){
-//            BeanUtils.copyProperties(company,updateCompany,"companyId");
+        if (Objects.nonNull(company)) {
             company.setCompanyName(updateCompany.getCompanyName());
             return companyRepository.save(company);
         }
