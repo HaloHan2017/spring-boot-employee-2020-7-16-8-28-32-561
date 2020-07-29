@@ -30,10 +30,9 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable int id) {
         List<Employee> employees = getEmployeesData();
-        for (Employee employee : employees) {
-            if (id == employee.getId()) {
-                return employee;
-            }
+        Optional<Employee> employeeOptional = employees.stream().filter(employee -> id == employee.getId()).findFirst();
+        if (employeeOptional.isPresent()) {
+            return employeeOptional.get();
         }
         return null;
     }
@@ -48,14 +47,13 @@ public class EmployeeController {
         return "employee is null";
     }
 
+    // todo
     @PutMapping("/{id}")
-    public String updateEmployeeById(@PathVariable Integer id, Employee newEmployee) {
+    public String updateEmployeeById(@PathVariable Integer id, @RequestBody Employee newEmployee) {
         List<Employee> employees = getEmployeesData();
         Optional<Employee> employeeOptional = employees.stream().filter(employee1 -> id == employee1.getId()).findFirst();
         if (employeeOptional.isPresent()) {
-            Employee employee1 = employeeOptional.get();
-            employee1 = newEmployee;
-            employees.add(employee1);
+            employees.set(employees.indexOf(employeeOptional.get()), newEmployee);
             return "update success";
         }
         return "employee is null";
