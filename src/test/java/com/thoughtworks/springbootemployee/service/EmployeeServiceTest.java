@@ -11,34 +11,35 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class EmployeeServiceTest {
-//    @Test
-//    void should_return_updated_employee_when_update_given_employee_id_and_employee_info() {
-//        // given
-//        Employee employee = new Employee(1, "lisi", 15, "female", 12200);
-//        EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
-//        given(mockedEmployeeRepository.findById(1)).willReturn(Optional.of(new Employee(1, "zhangsan", 12, "male", 1200)));
-//        given(mockedEmployeeRepository.save(employee)).willReturn(employee);
-//        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
-//        // when
-//        Employee employeeResult = employeeService.updateEmployeeById(1, employee);
-//        // then
-//        assertEquals(1, employeeResult.getId());
-//        assertEquals("lisi", employeeResult.getName());
-//    }
+    @Test
+    void should_return_updated_employee_when_update_given_employee_id_and_employee_info() {
+        // given
+        Employee employee = new Employee(1, "lisi", 15, "female", 12200);
+        EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
+        given(mockedEmployeeRepository.findById(1)).willReturn(Optional.of(new Employee(1, "zhangsan", 12, "male", 1200)));
+        given(mockedEmployeeRepository.save(employee)).willReturn(employee);
+        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
+        // when
+        Employee employeeResult = employeeService.updateEmployeeById(1, employee);
+        // then
+        assertEquals(1, employeeResult.getId());
+        assertEquals("lisi", employeeResult.getName());
+//        verify(mockedEmployeeRepository).findById(any());
+//        verify(mockedEmployeeRepository).save(any());
+    }
 
     @Test
     void should_return_employee_when_get_employee_by_id_given_id() {
         // given
         EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
-
         given(mockedEmployeeRepository.findById(1)).willReturn(Optional.of(new Employee(1, "lisi", 15, "female", 12200)));
-
         EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
-
         // when
         Employee employee = employeeService.getEmployeeById(1);
         // then
@@ -62,13 +63,11 @@ public class EmployeeServiceTest {
     void should_return_1_when_delete_employee_by_id_given_employee_id() {
         // given
         EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
-//        given(mockedEmployeeRepository.deleteById(1));
         EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
         // when
-        employeeService.deleteEmployeeById(1);
-
+        employeeService.deleteEmployeeById(2);
         // then
-//        assertEquals(1, result);
+        verify(mockedEmployeeRepository).deleteById(any());
     }
 
     @Test
