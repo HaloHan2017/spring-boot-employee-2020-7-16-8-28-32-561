@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 
 public class CompanyServiceTest {
     @Test
-    void should_return_updated_employee_when_update_given_employee_id_and_employee_info() {
+    void should_return_companies_when_get_companies_given_no_parameter() {
         // given
         CompanyRepository mockedCompanyRepository = mock(CompanyRepository.class);
         given(mockedCompanyRepository.findAll()).willReturn(
@@ -25,4 +25,5 @@ public class CompanyServiceTest {
         // then
         assertEquals(1, companies.size());
     }
+
 }
