@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,13 +34,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable int id) {
-        List<Employee> employees = getEmployeesData();
-        Optional<Employee> employeeOptional = employees.stream().filter(employee -> id == employee.getId()).findFirst();
-        if (employeeOptional.isPresent()) {
-            return employeeOptional.get();
-        }
-        return null;
+    public Employee getEmployeeById(@PathVariable Integer id) {
+        return employeeService.getEmployeeById(id);
     }
 
     @PostMapping

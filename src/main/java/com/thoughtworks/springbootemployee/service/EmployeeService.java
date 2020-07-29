@@ -3,8 +3,9 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 public class EmployeeService {
@@ -21,7 +22,10 @@ public class EmployeeService {
         return employee;
     }
 
-    public Employee getEmployeeById(int id) {
-        return null;
+    public Employee getEmployeeById(Integer id) {
+        if (Objects.isNull(id)) {
+            return null;
+        }
+        return employeeRepository.findEmployeeById(id);
     }
 }
