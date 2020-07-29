@@ -28,4 +28,8 @@ public class EmployeeService {
         }
         return employeeRepository.findEmployeeById(id);
     }
+
+    public int addEmployee(Employee employee) {
+        return -1;
+    }
 }

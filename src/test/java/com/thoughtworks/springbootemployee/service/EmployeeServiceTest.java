@@ -36,4 +36,17 @@ public class EmployeeServiceTest {
         // then
         assertEquals(1, employee.getId());
     }
+
+    @Test
+    void should_return_1_when_add_employee__given_employee() {
+        // given
+        Employee employee = new Employee();
+        EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
+        given(mockedEmployeeRepository.addEmployee(employee)).willReturn(1);
+        EmployeeService employeeService = new EmployeeService(new EmployeeRepository());
+        // when
+        int result = employeeService.addEmployee(employee);
+        // then
+        assertEquals(1,result);
+    }
 }

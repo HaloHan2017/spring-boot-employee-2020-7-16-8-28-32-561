@@ -25,4 +25,8 @@ public class EmployeeRepository {
     public Employee findEmployeeById(int id) {
         return employeeDataList.stream().filter(employee -> employee.getId() == id).findFirst().get();
     }
+
+    public int addEmployee(Employee employee) {
+        return -1;
+    }
 }
