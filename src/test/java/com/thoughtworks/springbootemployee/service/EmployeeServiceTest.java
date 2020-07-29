@@ -3,6 +3,8 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -76,10 +78,8 @@ public class EmployeeServiceTest {
         given(mockedEmployeeRepository.findByGender("male")).willReturn(Arrays.asList(new Employee(2, "bruno", 20, "male", 2000),
                 new Employee(3, "xiaosun", 21, "male", 5000)));
         EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
-
         // when
         List<Employee> employees = employeeService.getEmployeesByGender("male");
-
         // then
         assertEquals(2, employees.size());
     }
@@ -94,6 +94,21 @@ public class EmployeeServiceTest {
         EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
         // when
         List<Employee> employees = employeeService.getAllEmployees();
+        // then
+        assertEquals(2, employees.size());
+    }
+
+    @Test
+    void should_return_employees_when_get_employees_by_range_given_page_and_pageSize() {
+        // given
+        EmployeeRepository mockedEmployeeRepository = mock(EmployeeRepository.class);
+        given(mockedEmployeeRepository.findAll(PageRequest.of(1, 5))).
+                willReturn(new PageImpl<>(Arrays.asList(
+                        new Employee(2, "bruno", 20, "male", 2000),
+                        new Employee(3, "xiaosun", 21, "male", 5000))));
+        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
+        // when
+        List<Employee> employees = employeeService.getEmployeesByPage(1, 5).toList();
         // then
         assertEquals(2, employees.size());
     }

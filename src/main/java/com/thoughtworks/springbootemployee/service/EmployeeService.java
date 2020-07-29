@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -30,7 +31,7 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeById(Integer id) {
-        return employeeRepository.findById(id).get();
+        return employeeRepository.findById(id).orElse(null);
     }
 
     public Employee addEmployee(Employee employee) {
@@ -51,5 +52,19 @@ public class EmployeeService {
 
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
+    }
+
+    public List<Employee> getEmployeesByConditions(String gender, Integer page, Integer pageSize) {
+        List<Employee> employees = getAllEmployees();
+        if (Objects.nonNull(gender) && !gender.isEmpty()) {
+            employees = getEmployeesByGender(gender);
+        }
+        if (Objects.nonNull(page) && Objects.nonNull(pageSize)) {
+            Page<Employee> employeesByPage = getEmployeesByPage(page, pageSize);
+            if (Objects.nonNull(employeesByPage)) {
+                employees = employeesByPage.getContent();
+            }
+        }
+        return employees;
     }
 }

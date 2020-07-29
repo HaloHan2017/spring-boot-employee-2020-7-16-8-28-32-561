@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,21 +17,11 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-//    @GetMapping
-//    public List<Employee> getEmployeesByConditions(@RequestParam(value = "gender", required = false) String gender,
-//                                                   @RequestParam(value = "page", required = false) Integer page,
-//                                                   @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-//
-////        employeeService.g(gender, page, pageSize);/
-//
-////        List<Employee> employees = getEmployeesData();0
-//
-//        return null;
-//    }
-
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public List<Employee> getEmployeesByConditions(@RequestParam(value = "gender", required = false) String gender,
+                                                   @RequestParam(value = "page", required = false) Integer page,
+                                                   @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        return employeeService.getEmployeesByConditions(gender, page, pageSize);
     }
 
     @GetMapping("/{id}")
