@@ -1,7 +1,6 @@
 package com.thoughtworks.springbootemployee.integraationtest;
 
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -80,5 +78,17 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isOk());
         Company company = companyRepository.findById(createdCompany.getCompanyId()).orElse(null);
         assertNull(company);
+    }
+
+    @Test
+    void should_update_company_when_update_company_by_id_given_company_id_and_updated_company() throws Exception {
+        Company createdCompany = companyRepository.save(new Company("QQ"));
+        String updatedCompany = "{\"companyName\":\"wechat\"}";
+        mockMvc.perform(put("/companies/" + createdCompany.getCompanyId()).contentType(MediaType.APPLICATION_JSON).content(updatedCompany))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyName").value("wechat"));
+        Company company = companyRepository.findById(createdCompany.getCompanyId()).orElse(null);
+        assertNotNull(company);
+        assertEquals("wechat", company.getCompanyName());
     }
 }
