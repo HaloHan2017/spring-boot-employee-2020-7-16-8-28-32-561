@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -103,6 +102,15 @@ public class EmployeeIntegrationTest {
         Employee employee = employeeRepository.findById(1).orElse(null);
         assertNotNull(employee);
         assertEquals("rose", employee.getName());
+    }
+
+    @Test
+    void should_delete_employee_when_delete_employees_given_right_employee_id() throws Exception {
+        employeeRepository.save(new Employee(1, "JACK", 18, "male", 1000));
+        mockMvc.perform(delete("/employees/1"))
+                .andExpect(status().isOk());
+        Employee employee = employeeRepository.findById(1).orElse(null);
+        assertNull(employee);
     }
 
 
