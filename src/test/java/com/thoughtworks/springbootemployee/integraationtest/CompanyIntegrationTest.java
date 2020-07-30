@@ -37,4 +37,16 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].companyName").value("alibaba"));
     }
+
+    @Test
+    void should_return_companies_by_page_when_get_companies_by_page_given_page_and_pageSize() throws Exception {
+        companyRepository.save(new Company("alibaba1"));
+        companyRepository.save(new Company("alibaba2"));
+        companyRepository.save(new Company("alibaba3"));
+        companyRepository.save(new Company("alibaba4"));
+        mockMvc.perform(get("/companies").param("page", "1").param("pageSize", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].companyName").value("alibaba3"));
+    }
 }
