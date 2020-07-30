@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,7 +48,7 @@ public class EmployeeIntegrationTest {
 
         List<Employee> employees = employeeRepository.findAll();
         assertEquals(1, employees.size());
-        assertEquals("dasdas",employees.get(0).getName());
+        assertEquals("dasdas", employees.get(0).getName());
     }
 
     @Test
@@ -56,5 +57,16 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(get("/employees"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("JACK"));
+    }
+
+    @Test
+    void should_return_all_male_employees_when_get_employees_given_gender() throws Exception {
+        employeeRepository.save(new Employee(1, "JACK", 18, "male", 1000));
+        employeeRepository.save(new Employee(2, "ROSE", 18, "female", 1000));
+        mockMvc.perform(get("/employees")
+                .param("gender", "male"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].gender").value("male"));
     }
 }
