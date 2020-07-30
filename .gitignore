@@ -32,3 +32,5 @@ build/
 
 ### gradle ###
 .gradle
+build.gradle
+.gitignore
