@@ -9,7 +9,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
 import java.util.List;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -70,18 +72,17 @@ public class EmployeeIntegrationTest {
 
     @Test
     void should_return_employees_page_when_get_employees_given_page_and_pageSize() throws Exception {
-        employeeRepository.save(new Employee(1, "JACK", 18, "male", 1000));
-        employeeRepository.save(new Employee(2, "ROSE", 18, "female", 1000));
-        employeeRepository.save(new Employee(3, "xiaoming", 18, "female", 1000));
-        employeeRepository.save(new Employee(4, "xiaohong", 18, "female", 1000));
+        employeeRepository.save(new Employee("JACK", 18, "male", 1000));
+        employeeRepository.save(new Employee("ROSE", 18, "female", 1000));
+        employeeRepository.save(new Employee("xiaoming", 18, "female", 1000));
+        employeeRepository.save(new Employee("xiaohong", 18, "female", 1000));
         mockMvc.perform(get("/employees")
-                .param("page","0").param("pageSize","2"))
+                .param("page", "0").param("pageSize", "2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].name").value("JACK"))
                 .andExpect(jsonPath("$[1].name").value("ROSE"));
     }
-
 
     @Test
     void should_update_employee_when_update_employees_given_employee_id_and_updated_employee() throws Exception {
