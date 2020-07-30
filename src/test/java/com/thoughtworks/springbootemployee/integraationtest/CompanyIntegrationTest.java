@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.integraationtest;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,8 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -70,5 +71,14 @@ public class CompanyIntegrationTest {
         mockMvc.perform(get("/companies/" + company.getCompanyId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.companyName").value("huawei"));
+    }
+
+    @Test
+    void should_delete_employee_when_delete_employees_given_right_employee_id() throws Exception {
+        Company createdCompany = companyRepository.save(new Company("wangyi"));
+        mockMvc.perform(delete("/companies/" + createdCompany.getCompanyId()))
+                .andExpect(status().isOk());
+        Company company = companyRepository.findById(createdCompany.getCompanyId()).orElse(null);
+        assertNull(company);
     }
 }
