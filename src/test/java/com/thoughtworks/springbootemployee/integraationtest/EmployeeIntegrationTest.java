@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.integraationtest;
 
+import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -112,5 +113,12 @@ public class EmployeeIntegrationTest {
         assertNull(employee);
     }
 
-
+    @Test
+    void should_return_employee_when_get_employee_by_id_given_id() throws Exception {
+        Employee employee = employeeRepository.save(new Employee("JERRY", 18, "male", 100000));
+        mockMvc.perform(get("/employees/" + employee.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("JERRY"))
+                .andExpect(jsonPath("$.gender").value("male"));
+    }
 }
