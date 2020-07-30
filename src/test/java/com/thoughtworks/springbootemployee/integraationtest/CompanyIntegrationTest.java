@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.integraationtest;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -10,9 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,5 +52,17 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].companyName").value("alibaba3"));
+    }
+
+    @Test
+    void should_return_company_when_add_company_given_company() throws Exception {
+        String company = "{\"companyName\":\"tencent\"}";
+        mockMvc.perform(post("/companies").contentType(MediaType.APPLICATION_JSON).content(company))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyName").value("tencent"));
+
+        List<Company> companies = companyRepository.findAll();
+        assertEquals(1, companies.size());
+        assertEquals("tencent", companies.get(0).getCompanyName());
     }
 }
