@@ -86,7 +86,7 @@ public class EmployeeIntegrationTest {
 
     @Test
     void should_update_employee_when_update_employees_given_employee_id_and_updated_employee() throws Exception {
-        employeeRepository.save(new Employee(1, "JACK", 18, "male", 1000));
+        Employee createdEmployee = employeeRepository.save(new Employee(1, "JACK", 18, "male", 1000));
         String updatedEmployee = "{\n" +
                 "        \"name\":\"rose\",\n" +
                 "        \"age\":23,\n" +
@@ -94,21 +94,21 @@ public class EmployeeIntegrationTest {
                 "        \"salary\":321,\n" +
                 "        \"companyId\":33\n" +
                 "}";
-        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON).content(updatedEmployee))
+        mockMvc.perform(put("/employees/" + createdEmployee.getId()).contentType(MediaType.APPLICATION_JSON).content(updatedEmployee))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("rose"))
                 .andExpect(jsonPath("$.gender").value("female"));
-        Employee employee = employeeRepository.findById(1).orElse(null);
+        Employee employee = employeeRepository.findById(createdEmployee.getId()).orElse(null);
         assertNotNull(employee);
         assertEquals("rose", employee.getName());
     }
 
     @Test
     void should_delete_employee_when_delete_employees_given_right_employee_id() throws Exception {
-        employeeRepository.save(new Employee(1, "JACK", 18, "male", 1000));
-        mockMvc.perform(delete("/employees/1"))
+        Employee createdEmployee = employeeRepository.save(new Employee("JACK", 18, "male", 1000));
+        mockMvc.perform(delete("/employees/" + createdEmployee.getId()))
                 .andExpect(status().isOk());
-        Employee employee = employeeRepository.findById(1).orElse(null);
+        Employee employee = employeeRepository.findById(createdEmployee.getId()).orElse(null);
         assertNull(employee);
     }
 
