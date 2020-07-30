@@ -1,5 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.data.domain.Page;
@@ -30,13 +32,18 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    public void deleteCompanyById(Integer id) {
-        // todo logic
+    public void deleteCompanyById(Integer id) throws NoSuchDataException {
+        Company company = companyRepository.findById(id).orElse(null);
+        if(Objects.isNull(company)){
+            throw new NoSuchDataException();
+        }
         companyRepository.deleteById(id);
     }
 
     public Page<Company> getCompaniesByRange(int page, int pageSize) {
-        //todo page
+        if(page < 0 || pageSize <= 0){
+            return null;
+        }
         return companyRepository.findAll(PageRequest.of(page, pageSize));
     }
 
@@ -48,13 +55,12 @@ public class CompanyService {
         return companies;
     }
 
-    // todo handle execption
-    public Company updateCompanyById(Integer id, Company updateCompany) {
+    public Company updateCompanyById(Integer id, Company updateCompany) throws IllegalOperationException {
         Company company = companyRepository.findById(id).orElse(null);
-        if (Objects.nonNull(company)) {
-            company.setCompanyName(updateCompany.getCompanyName());
-            return companyRepository.save(company);
+        if (Objects.isNull(company)) {
+            throw new IllegalOperationException();
         }
-        return null;
+        company.setCompanyName(updateCompany.getCompanyName());
+        return companyRepository.save(company);
     }
 }
