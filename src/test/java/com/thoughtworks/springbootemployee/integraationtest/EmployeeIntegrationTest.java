@@ -11,11 +11,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,6 +83,26 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].name").value("JACK"))
                 .andExpect(jsonPath("$[1].name").value("ROSE"));
+    }
+
+
+    @Test
+    void should_update_employee_when_update_employees_given_employee_id_and_updated_employee() throws Exception {
+        employeeRepository.save(new Employee(1, "JACK", 18, "male", 1000));
+        String updatedEmployee = "{\n" +
+                "        \"name\":\"rose\",\n" +
+                "        \"age\":23,\n" +
+                "        \"gender\":\"female\",\n" +
+                "        \"salary\":321,\n" +
+                "        \"companyId\":33\n" +
+                "}";
+        mockMvc.perform(put("/employees/1").contentType(MediaType.APPLICATION_JSON).content(updatedEmployee))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("rose"))
+                .andExpect(jsonPath("$.gender").value("female"));
+        Employee employee = employeeRepository.findById(1).orElse(null);
+        assertNotNull(employee);
+        assertEquals("rose", employee.getName());
     }
 
 
