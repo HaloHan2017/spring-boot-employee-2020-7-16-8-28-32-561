@@ -1,7 +1,6 @@
 package com.thoughtworks.springbootemployee.integraationtest;
 
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -60,9 +59,16 @@ public class CompanyIntegrationTest {
         mockMvc.perform(post("/companies").contentType(MediaType.APPLICATION_JSON).content(company))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.companyName").value("tencent"));
-
         List<Company> companies = companyRepository.findAll();
         assertEquals(1, companies.size());
         assertEquals("tencent", companies.get(0).getCompanyName());
+    }
+
+    @Test
+    void should_return_company_when_get_company_by_id_given_id() throws Exception {
+        Company company = companyRepository.save(new Company(1, "huawei"));
+        mockMvc.perform(get("/companies/" + company.getCompanyId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyName").value("huawei"));
     }
 }
