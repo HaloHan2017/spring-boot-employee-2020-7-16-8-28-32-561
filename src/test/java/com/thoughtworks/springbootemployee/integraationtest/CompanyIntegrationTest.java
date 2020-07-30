@@ -74,7 +74,7 @@ public class CompanyIntegrationTest {
     }
 
     @Test
-    void should_delete_employee_when_delete_employees_given_right_employee_id() throws Exception {
+    void should_delete_company_when_delete_company_by_id_given_right_company_id() throws Exception {
         Company createdCompany = companyRepository.save(new Company("wangyi"));
         mockMvc.perform(delete("/companies/" + createdCompany.getCompanyId()))
                 .andExpect(status().isOk());
