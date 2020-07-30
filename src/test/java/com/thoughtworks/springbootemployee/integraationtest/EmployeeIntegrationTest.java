@@ -69,4 +69,20 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].gender").value("male"));
     }
+
+    @Test
+    void should_return_employees_page_when_get_employees_given_page_and_pageSize() throws Exception {
+        employeeRepository.save(new Employee(1, "JACK", 18, "male", 1000));
+        employeeRepository.save(new Employee(2, "ROSE", 18, "female", 1000));
+        employeeRepository.save(new Employee(3, "xiaoming", 18, "female", 1000));
+        employeeRepository.save(new Employee(4, "xiaohong", 18, "female", 1000));
+        mockMvc.perform(get("/employees")
+                .param("page","0").param("pageSize","2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name").value("JACK"))
+                .andExpect(jsonPath("$[1].name").value("ROSE"));
+    }
+
+
 }
