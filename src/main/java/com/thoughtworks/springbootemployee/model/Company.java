@@ -7,10 +7,10 @@ import java.util.List;
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int companyId;
+    private Integer companyId;
     private String companyName;
-    private int employeesNumber;
-    @OneToMany
+    private Integer employeesNumber;
+    @OneToMany(targetEntity = Employee.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Employee> employees;
 
     public Company() {
@@ -27,6 +27,14 @@ public class Company {
         this.employees = employees;
     }
 
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
     public String getCompanyName() {
         return companyName;
     }
@@ -35,20 +43,12 @@ public class Company {
         this.companyName = companyName;
     }
 
-    public int getEmployeesNumber() {
+    public Integer getEmployeesNumber() {
         return employeesNumber;
     }
 
-    public void setEmployeesNumber(int employeesNumber) {
+    public void setEmployeesNumber(Integer employeesNumber) {
         this.employeesNumber = employeesNumber;
-    }
-
-    public int getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
     }
 
     public List<Employee> getEmployees() {

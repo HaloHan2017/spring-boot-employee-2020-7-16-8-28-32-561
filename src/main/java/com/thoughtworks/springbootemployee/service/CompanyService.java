@@ -31,22 +31,24 @@ public class CompanyService {
     }
 
     public void deleteCompanyById(Integer id) {
+        // todo logic
         companyRepository.deleteById(id);
     }
 
     public Page<Company> getCompaniesByRange(int page, int pageSize) {
+        //todo page
         return companyRepository.findAll(PageRequest.of(page, pageSize));
     }
 
     public List<Company> getCompaniesByConditions(Integer page, Integer pageSize) {
         List<Company> companies = getAllCompanies();
-        Page<Company> companiesByRange = getCompaniesByRange(page, pageSize);
-        if (Objects.nonNull(page) && Objects.nonNull(pageSize) && Objects.nonNull(companiesByRange)) {
-            companies = companiesByRange.getContent();
+        if (Objects.nonNull(page) && Objects.nonNull(pageSize)) {
+            companies = getCompaniesByRange(page, pageSize).getContent();
         }
         return companies;
     }
 
+    // todo handle execption
     public Company updateCompanyById(Integer id, Company updateCompany) {
         Company company = companyRepository.findById(id).orElse(null);
         if (Objects.nonNull(company)) {

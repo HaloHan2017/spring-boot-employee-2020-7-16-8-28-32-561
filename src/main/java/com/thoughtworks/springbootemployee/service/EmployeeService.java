@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
+    // todo
     public Employee updateEmployeeById(int id, Employee updatedEmployee) {
         Employee employee = employeeRepository.findById(id).orElse(null);
         if (Objects.nonNull(employee)) {
@@ -25,6 +27,7 @@ public class EmployeeService {
             employee.setAge(updatedEmployee.getAge());
             employee.setGender(updatedEmployee.getGender());
             employee.setSalary(updatedEmployee.getSalary());
+//            BeanUtils.copyProperties();
             return employeeRepository.save(employee);
         }
         return null;
@@ -47,7 +50,10 @@ public class EmployeeService {
     }
 
     public Page<Employee> getEmployeesByPage(Integer page, Integer pageSize) {
-        return employeeRepository.findAll(PageRequest.of(page, pageSize));
+        if(Objects.nonNull(page) && Objects.nonNull(pageSize)){
+            return employeeRepository.findAll(PageRequest.of(page, pageSize));
+        }
+        return null;
     }
 
     public List<Employee> getAllEmployees() {
@@ -55,6 +61,7 @@ public class EmployeeService {
     }
 
     public List<Employee> getEmployeesByConditions(String gender, Integer page, Integer pageSize) {
+        // todo code
         List<Employee> employees = getAllEmployees();
         if (Objects.nonNull(gender) && !gender.isEmpty()) {
             employees = getEmployeesByGender(gender);
