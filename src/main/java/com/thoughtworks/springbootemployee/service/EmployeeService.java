@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.BeanUtils;
@@ -41,7 +42,11 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public void deleteEmployeeById(Integer id) {
+    public void deleteEmployeeById(Integer id) throws IllegalOperationException {
+        Employee employee = employeeRepository.findById(id).orElse(null);
+        if(Objects.isNull(employee)){
+            throw new IllegalOperationException();
+        }
         employeeRepository.deleteById(id);
     }
 

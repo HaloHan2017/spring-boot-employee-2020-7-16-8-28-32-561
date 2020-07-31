@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -68,7 +69,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_void_when_update_company_given_company_id_and_company() {
+    void should_return_void_when_update_company_given_company_id_and_company() throws IllegalOperationException {
         // given
         Company company = new Company(1, "alibaba");
         given(mockedCompanyRepository.findById(anyInt())).willReturn(Optional.of(new Company(1, "tencent")));

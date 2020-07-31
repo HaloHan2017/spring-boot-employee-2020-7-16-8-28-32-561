@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_1_when_delete_employee_by_id_given_employee_id() {
+    void should_return_1_when_delete_employee_by_id_given_employee_id() throws IllegalOperationException {
         // given
         // when
         employeeService.deleteEmployeeById(2);

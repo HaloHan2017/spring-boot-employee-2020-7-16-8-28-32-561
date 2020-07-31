@@ -32,5 +32,7 @@ build/
 
 ### gradle ###
 .gradle
+/test.mv.db
+/test.trace.db
 build.gradle
 .gitignore
