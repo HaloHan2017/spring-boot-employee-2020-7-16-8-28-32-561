@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
@@ -28,7 +28,7 @@ public class EmployeeServiceTest {
     private EmployeeService employeeService;
 
     @Test
-    void should_return_updated_employee_when_update_given_employee_id_and_employee_info() {
+    void should_return_updated_employee_when_update_given_employee_id_and_employee_info() throws NoSuchDataException {
         // given
         Employee employee = new Employee(1, "lisi", 15, "female", 12200);
         given(mockedEmployeeRepository.findById(anyInt())).willReturn(Optional.of(new Employee(1, "zhangsan", 12, "male", 1200)));
@@ -38,6 +38,18 @@ public class EmployeeServiceTest {
         // then
         assertEquals(1, employeeResult.getId());
         assertEquals("lisi", employeeResult.getName());
+    }
+
+    @Test
+    void should_throw_NoSuchDataException_when_update_given_employee_id_and_employee_info() {
+        //given
+        given(mockedEmployeeRepository.findById(anyInt())).willReturn(Optional.empty());
+        given(mockedEmployeeRepository.save(any())).willReturn(null);
+        NoSuchDataException noSuchDataException = assertThrows(NoSuchDataException.class, () -> {
+            employeeService.updateEmployeeById(1, new Employee());
+        });
+        //then
+        assertNotNull(noSuchDataException);
     }
 
     @Test
@@ -62,7 +74,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_1_when_delete_employee_by_id_given_employee_id() throws IllegalOperationException {
+    void should_return_1_when_delete_employee_by_id_given_employee_id() {
         // given
         // when
         IllegalOperationException illegalOperationException = assertThrows(IllegalOperationException.class, () -> {
