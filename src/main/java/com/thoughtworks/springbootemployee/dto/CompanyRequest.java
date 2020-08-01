@@ -1,4 +1,4 @@
-package com.thoughtworks.springbootemployee.dto.request;
+package com.thoughtworks.springbootemployee.dto;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 

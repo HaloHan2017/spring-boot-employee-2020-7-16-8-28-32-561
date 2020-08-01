@@ -1,4 +1,4 @@
-package com.thoughtworks.springbootemployee.dto.request;
+package com.thoughtworks.springbootemployee.dto;
 
 public class EmployeeRequest {
     private Integer id;
