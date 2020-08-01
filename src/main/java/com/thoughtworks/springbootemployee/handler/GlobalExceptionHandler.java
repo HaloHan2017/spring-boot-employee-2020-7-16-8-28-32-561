@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.handler;
 
 import com.thoughtworks.springbootemployee.enums.ExceptionMessage;
+import com.thoughtworks.springbootemployee.exception.CustomException;
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import org.springframework.http.HttpStatus;
@@ -20,5 +21,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ExceptionMessage illegalOperationExceptionHandler() {
         return ExceptionMessage.ILLEGAL_OPERATION;
+    }
+
+    @ExceptionHandler(CustomException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String customExceptionHandler(CustomException exception) {
+        return exception.getMessage();
     }
 }
