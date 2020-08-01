@@ -1,6 +1,8 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.mapper.EmployeeRequestMapper;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.http.HttpStatus;
@@ -11,11 +13,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-
     private final EmployeeService employeeService;
+    private EmployeeRequestMapper employeeRequestMapper;
 
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, EmployeeRequestMapper employeeRequestMapper) {
         this.employeeService = employeeService;
+        this.employeeRequestMapper = employeeRequestMapper;
     }
 
     @GetMapping
@@ -32,13 +35,13 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee addEmployee(@RequestBody Employee employee) {
-        return employeeService.addEmployee(employee);
+    public Employee addEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        return employeeService.addEmployee(employeeRequestMapper.toEmployee(employeeRequest));
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployeeById(@PathVariable Integer id, @RequestBody Employee updatedEmployee) {
-        return employeeService.updateEmployeeById(id, updatedEmployee);
+    public Employee updateEmployeeById(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
+        return employeeService.updateEmployeeById(id, employeeRequestMapper.toEmployee(employeeRequest));
     }
 
     @DeleteMapping("/{id}")
