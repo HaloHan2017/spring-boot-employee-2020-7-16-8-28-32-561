@@ -1,9 +1,9 @@
 package com.thoughtworks.springbootemployee.controller;
 
-import com.thoughtworks.springbootemployee.dto.CompanyRequest;
+import com.thoughtworks.springbootemployee.dto.request.CompanyRequest;
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
-import com.thoughtworks.springbootemployee.mapper.CompanyRequestMapper;
+import com.thoughtworks.springbootemployee.mapper.request.CompanyRequestMapper;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.web.bind.annotation.*;

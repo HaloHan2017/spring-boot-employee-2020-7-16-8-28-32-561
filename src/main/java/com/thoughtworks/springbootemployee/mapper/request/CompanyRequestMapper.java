@@ -1,6 +1,6 @@
-package com.thoughtworks.springbootemployee.mapper;
+package com.thoughtworks.springbootemployee.mapper.request;
 
-import com.thoughtworks.springbootemployee.dto.CompanyRequest;
+import com.thoughtworks.springbootemployee.dto.request.CompanyRequest;
 import com.thoughtworks.springbootemployee.model.Company;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
