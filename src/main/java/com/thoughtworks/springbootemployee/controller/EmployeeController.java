@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.mapper.EmployeeRequestMapper;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
@@ -40,7 +41,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployeeById(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
+    public Employee updateEmployeeById(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) throws NoSuchDataException {
         return employeeService.updateEmployeeById(id, employeeRequestMapper.toEmployee(employeeRequest));
     }
 
