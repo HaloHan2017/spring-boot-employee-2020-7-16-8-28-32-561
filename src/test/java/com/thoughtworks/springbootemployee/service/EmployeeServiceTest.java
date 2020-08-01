@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 public class EmployeeServiceTest {
@@ -65,9 +65,11 @@ public class EmployeeServiceTest {
     void should_return_1_when_delete_employee_by_id_given_employee_id() throws IllegalOperationException {
         // given
         // when
-        employeeService.deleteEmployeeById(2);
+        IllegalOperationException illegalOperationException = assertThrows(IllegalOperationException.class, () -> {
+            employeeService.deleteEmployeeById(anyInt());
+        });
         // then
-        verify(mockedEmployeeRepository).deleteById(any());
+        assertEquals(IllegalOperationException.class, illegalOperationException.getClass());
     }
 
     @Test
