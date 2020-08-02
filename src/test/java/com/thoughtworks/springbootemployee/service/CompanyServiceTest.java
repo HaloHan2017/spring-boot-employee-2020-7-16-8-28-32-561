@@ -25,7 +25,7 @@ import static org.mockito.BDDMockito.given;
 @SpringBootTest
 public class CompanyServiceTest {
     @InjectMocks
-    private CompanyService mockedCompanyService;
+    private CompanyService companyService;
     @Mock
     private CompanyRepository mockedCompanyRepository;
     @Mock
@@ -42,7 +42,7 @@ public class CompanyServiceTest {
         given(mockedCompanyRepository.findAll()).willReturn(
                 Arrays.asList(new Company(1, "alibaba", getEmployees())));
         // when
-        List<CompanyResponse> companies = mockedCompanyService.getAllCompanies();
+        List<CompanyResponse> companies = companyService.getAllCompanies();
         // then
         assertEquals(1, companies.size());
     }
@@ -57,7 +57,7 @@ public class CompanyServiceTest {
         given(mockedCompanyResponseMapper.toCompanyResponse(any())).willReturn(new CompanyResponse(1, "alibaba", 2,
                 getEmployees()));
         // when
-        CompanyResponse company = mockedCompanyService.getCompanyById(1);
+        CompanyResponse company = companyService.getCompanyById(1);
         // then
         assertEquals("alibaba", company.getCompanyName());
     }
@@ -72,7 +72,7 @@ public class CompanyServiceTest {
         given(mockedCompanyResponseMapper.toCompanyResponse(any())).willReturn(new CompanyResponse(1, "alibaba", 2,
                 getEmployees()));
         // when
-        CompanyResponse newCompany = mockedCompanyService.addCompany(company);
+        CompanyResponse newCompany = companyService.addCompany(company);
         // then
         assertEquals(company.getCompanyName(), newCompany.getCompanyName());
     }
@@ -85,7 +85,7 @@ public class CompanyServiceTest {
         given(mockedCompanyRepository.save(any())).willReturn(company);
         given(mockedCompanyResponseMapper.toCompanyResponse(any())).willReturn(new CompanyResponse(1, "alibaba"));
         // when
-        CompanyResponse updatedCompany = mockedCompanyService.updateCompanyById(1, company);
+        CompanyResponse updatedCompany = companyService.updateCompanyById(1, company);
         // then
         assertEquals(company.getCompanyName(), updatedCompany.getCompanyName());
     }
@@ -97,7 +97,7 @@ public class CompanyServiceTest {
                 willReturn(new PageImpl<>(Arrays.asList(new Company(1, "alibaba"),
                         new Company(2, "tencent"))));
         // when
-        List<CompanyResponse> companies = mockedCompanyService.getCompaniesByRange(1, 2);
+        List<CompanyResponse> companies = companyService.getCompaniesByRange(1, 2);
         // then
         assertEquals(2, companies.size());
     }
