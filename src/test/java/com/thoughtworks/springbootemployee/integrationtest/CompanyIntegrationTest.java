@@ -49,7 +49,7 @@ class CompanyIntegrationTest {
         mockMvc.perform(get("/companies").param("page", "1").param("pageSize", "2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].companyName").value("alibaba3"));
+                .andExpect(jsonPath("$[0].companyName").value("alibaba1"));
     }
 
     @Test

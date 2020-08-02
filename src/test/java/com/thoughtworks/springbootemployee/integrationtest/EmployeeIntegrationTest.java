@@ -76,7 +76,7 @@ class EmployeeIntegrationTest {
         employeeRepository.save(new Employee("xiaoming", 18, "female", 1000));
         employeeRepository.save(new Employee("xiaohong", 18, "female", 1000));
         mockMvc.perform(get("/employees")
-                .param("page", "0").param("pageSize", "2"))
+                .param("page", "1").param("pageSize", "2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].name").value("JACK"))
