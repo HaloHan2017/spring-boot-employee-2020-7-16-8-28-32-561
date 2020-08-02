@@ -23,10 +23,19 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeResponse> getEmployeesByConditions(@RequestParam(value = "gender", required = false) String gender,
-                                                           @RequestParam(value = "page", required = false) Integer page,
-                                                           @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        return employeeService.getEmployeesByConditions(gender, page, pageSize);
+    public List<EmployeeResponse> getAllEmployees() {
+        return employeeService.getAllEmployees();
+    }
+
+    @GetMapping(params = {"gender"})
+    public List<EmployeeResponse> getEmployeesByGender(@RequestParam(value = "gender") String gender) {
+        return employeeService.getEmployeesByGender(gender);
+    }
+
+    @GetMapping(params = {"page", "pageSize"})
+    public List<EmployeeResponse> getEmployeesByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                     @RequestParam(value = "pageSize", defaultValue = "3") Integer pageSize) {
+        return employeeService.getEmployeesByPage(page, pageSize);
     }
 
     @GetMapping("/{id}")

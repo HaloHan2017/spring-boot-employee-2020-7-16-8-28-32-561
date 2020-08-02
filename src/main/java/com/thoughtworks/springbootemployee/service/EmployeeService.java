@@ -4,7 +4,6 @@ import com.thoughtworks.springbootemployee.dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
-import com.thoughtworks.springbootemployee.mapper.EmployeeRequestMapper;
 import com.thoughtworks.springbootemployee.mapper.EmployeeResponseMapper;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -86,19 +85,8 @@ public class EmployeeService {
         return null;
     }
 
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
-    }
-
-    public List<EmployeeResponse> getEmployeesByConditions(String gender, Integer page, Integer pageSize) {
-        List<Employee> employees = getAllEmployees();
-        if (Objects.nonNull(gender) && !gender.isEmpty()) {
-            employees = employeeRepository.findByGender(gender);
-        }
-        Page<Employee> employeesByPage = employeeRepository.findAll(PageRequest.of(page, pageSize));
-        if (Objects.nonNull(page) && Objects.nonNull(pageSize) && Objects.nonNull(employeesByPage)) {
-            employees = employeesByPage.getContent();
-        }
-        return employees.stream().map(employee -> employeeResponseMapper.toEmployeeResponse(employee)).collect(Collectors.toList());
+    public List<EmployeeResponse> getAllEmployees() {
+        List<Employee> allEmployees = employeeRepository.findAll();
+        return allEmployees.stream().map(employee -> employeeResponseMapper.toEmployeeResponse(employee)).collect(Collectors.toList());
     }
 }
