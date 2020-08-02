@@ -1,10 +1,10 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
+import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.mapper.EmployeeRequestMapper;
-import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,25 +23,25 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getEmployeesByConditions(@RequestParam(value = "gender", required = false) String gender,
-                                                   @RequestParam(value = "page", required = false) Integer page,
-                                                   @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    public List<EmployeeResponse> getEmployeesByConditions(@RequestParam(value = "gender", required = false) String gender,
+                                                           @RequestParam(value = "page", required = false) Integer page,
+                                                           @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         return employeeService.getEmployeesByConditions(gender, page, pageSize);
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Integer id) {
+    public EmployeeResponse getEmployeeById(@PathVariable Integer id) {
         return employeeService.getEmployeeById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee addEmployee(@RequestBody EmployeeRequest employeeRequest) {
+    public EmployeeResponse addEmployee(@RequestBody EmployeeRequest employeeRequest) {
         return employeeService.addEmployee(employeeRequestMapper.toEmployee(employeeRequest));
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployeeById(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) throws NoSuchDataException {
+    public EmployeeResponse updateEmployeeById(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) throws NoSuchDataException {
         return employeeService.updateEmployeeById(id, employeeRequestMapper.toEmployee(employeeRequest));
     }
 
