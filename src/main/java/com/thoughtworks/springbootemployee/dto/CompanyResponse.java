@@ -1,37 +1,24 @@
-package com.thoughtworks.springbootemployee.model;
+package com.thoughtworks.springbootemployee.dto;
 
-import javax.persistence.*;
+import com.thoughtworks.springbootemployee.model.Employee;
+
 import java.util.List;
 
-@Entity
-public class Company {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CompanyResponse {
     private Integer companyId;
     private String companyName;
     private Integer employeesNumber;
-    @OneToMany(targetEntity = Employee.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Employee> employees;
 
-    public Company() {
+    public CompanyResponse() {
     }
 
-    public Company(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public Company(int companyId, String companyName) {
+    public CompanyResponse(Integer companyId, String companyName) {
         this.companyId = companyId;
         this.companyName = companyName;
     }
 
-    public Company(int companyId, String companyName, List<Employee> employees) {
-        this.companyId = companyId;
-        this.companyName = companyName;
-        this.employees = employees;
-    }
-
-    public Company(Integer companyId, String companyName, Integer employeesNumber, List<Employee> employees) {
+    public CompanyResponse(Integer companyId, String companyName, Integer employeesNumber, List<Employee> employees) {
         this.companyId = companyId;
         this.companyName = companyName;
         this.employeesNumber = employeesNumber;
