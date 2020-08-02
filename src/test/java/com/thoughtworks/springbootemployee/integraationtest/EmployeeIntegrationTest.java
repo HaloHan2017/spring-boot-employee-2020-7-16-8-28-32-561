@@ -29,8 +29,7 @@ public class EmployeeIntegrationTest {
     private EmployeeRepository employeeRepository;
 
     @AfterEach
-    void clean() {
-        System.out.println("begin Each");
+    private void afterAll() {
         this.employeeRepository.deleteAll();
     }
 
