@@ -1,6 +1,8 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
+import com.thoughtworks.springbootemployee.mapper.CompanyResponseMapper;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -26,14 +28,21 @@ public class CompanyServiceTest {
     private CompanyService companyService;
     @Mock
     private CompanyRepository mockedCompanyRepository;
+    @Mock
+    private CompanyResponseMapper mockedCompanyResponseMapper;
+
+    private List<Employee> getEmployees() {
+        return Arrays.asList(new Employee(1, "sss", 20, "male", 200),
+                new Employee(2, "fff", 50, "male", 5000));
+    }
 
     @Test
     void should_return_companies_when_get_companies_given_no_parameter() {
         // given
         given(mockedCompanyRepository.findAll()).willReturn(
-                Arrays.asList(new Company(1, "alibaba", Arrays.asList(new Employee(1, "sss", 20, "male", 200), new Employee(2, "fff", 50, "male", 5000)))));
+                Arrays.asList(new Company(1, "alibaba", getEmployees())));
         // when
-        List<Company> companies = companyService.getAllCompanies();
+        List<CompanyResponse> companies = companyService.getAllCompanies();
         // then
         assertEquals(1, companies.size());
     }
@@ -43,11 +52,12 @@ public class CompanyServiceTest {
     void should_return_company_when_get_company_by_id_given_id() {
         // given
         given(mockedCompanyRepository.findById(1)).willReturn(
-                Optional.of(new Company(1, "alibaba",
-                        Arrays.asList(new Employee(1, "sss", 20, "male", 200),
-                                new Employee(2, "fff", 50, "male", 5000)))));
+                Optional.of(new Company(1, "alibaba", 2,
+                        getEmployees())));
+        given(mockedCompanyResponseMapper.toCompanyResponse(any())).willReturn(new CompanyResponse(1, "alibaba", 2,
+                getEmployees()));
         // when
-        Company company = companyService.getCompanyById(1);
+        CompanyResponse company = companyService.getCompanyById(1);
         // then
         assertEquals("alibaba", company.getCompanyName());
     }
@@ -56,14 +66,13 @@ public class CompanyServiceTest {
     void should_return_company_when_add_company_given_company() {
         // given
         Company company = new Company(1, "alibaba",
-                Arrays.asList(new Employee(1, "sss", 20, "male", 200),
-                        new Employee(2, "fff", 50, "male", 5000)));
-        given(mockedCompanyRepository.save(company)).willReturn(
-                new Company(1, "alibaba",
-                        Arrays.asList(new Employee(1, "sss", 20, "male", 200),
-                                new Employee(2, "fff", 50, "male", 5000))));
+                getEmployees());
+        given(mockedCompanyRepository.save(company)).willReturn(new Company(1, "alibaba", 2,
+                getEmployees()));
+        given(mockedCompanyResponseMapper.toCompanyResponse(any())).willReturn(new CompanyResponse(1, "alibaba", 2,
+                getEmployees()));
         // when
-        Company newCompany = companyService.addCompany(company);
+        CompanyResponse newCompany = companyService.addCompany(company);
         // then
         assertEquals(company.getCompanyName(), newCompany.getCompanyName());
     }
@@ -74,8 +83,9 @@ public class CompanyServiceTest {
         Company company = new Company(1, "alibaba");
         given(mockedCompanyRepository.findById(anyInt())).willReturn(Optional.of(new Company(1, "tencent")));
         given(mockedCompanyRepository.save(any())).willReturn(company);
+        given(mockedCompanyResponseMapper.toCompanyResponse(any())).willReturn(new CompanyResponse(1, "alibaba"));
         // when
-        Company updatedCompany = companyService.updateCompanyById(1, company);
+        CompanyResponse updatedCompany = companyService.updateCompanyById(1, company);
         // then
         assertEquals(company.getCompanyName(), updatedCompany.getCompanyName());
     }
@@ -87,7 +97,7 @@ public class CompanyServiceTest {
                 willReturn(new PageImpl<>(Arrays.asList(new Company(1, "alibaba"),
                         new Company(2, "tencent"))));
         // when
-        List<Company> companies = companyService.getCompaniesByRange(1, 2).toList();
+        List<CompanyResponse> companies = companyService.getCompaniesByRange(1, 2);
         // then
         assertEquals(2, companies.size());
     }
