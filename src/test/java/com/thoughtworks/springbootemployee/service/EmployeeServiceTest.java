@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
-public class EmployeeServiceTest {
+class EmployeeServiceTest {
     @Mock
     private EmployeeRepository mockedEmployeeRepository;
     @InjectMocks
@@ -56,9 +56,8 @@ public class EmployeeServiceTest {
         //given
         given(mockedEmployeeRepository.findById(anyInt())).willReturn(Optional.empty());
         given(mockedEmployeeRepository.save(any())).willReturn(null);
-        NoSuchDataException noSuchDataException = assertThrows(NoSuchDataException.class, () -> {
-            mockedEmployeeService.updateEmployeeById(1, new Employee());
-        });
+        NoSuchDataException noSuchDataException =
+                assertThrows(NoSuchDataException.class, () -> mockedEmployeeService.updateEmployeeById(1, new Employee()));
         //then
         assertNotNull(noSuchDataException);
     }
@@ -90,9 +89,8 @@ public class EmployeeServiceTest {
     void should_return_1_when_delete_employee_by_id_given_employee_id() {
         // given
         // when
-        IllegalOperationException illegalOperationException = assertThrows(IllegalOperationException.class, () -> {
-            mockedEmployeeService.deleteEmployeeById(anyInt());
-        });
+        IllegalOperationException illegalOperationException =
+                assertThrows(IllegalOperationException.class, () -> mockedEmployeeService.deleteEmployeeById(anyInt()));
         // then
         assertEquals(IllegalOperationException.class, illegalOperationException.getClass());
     }

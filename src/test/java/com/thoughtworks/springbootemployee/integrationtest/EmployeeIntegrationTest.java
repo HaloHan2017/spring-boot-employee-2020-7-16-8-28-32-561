@@ -1,6 +1,5 @@
-package com.thoughtworks.springbootemployee.integraationtest;
+package com.thoughtworks.springbootemployee.integrationtest;
 
-import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EmployeeIntegrationTest {
+class EmployeeIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

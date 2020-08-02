@@ -1,4 +1,4 @@
-package com.thoughtworks.springbootemployee.integraationtest;
+package com.thoughtworks.springbootemployee.integrationtest;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CompanyIntegrationTest {
+class CompanyIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired

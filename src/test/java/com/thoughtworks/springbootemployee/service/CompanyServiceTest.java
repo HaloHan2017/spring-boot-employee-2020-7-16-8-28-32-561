@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
-public class CompanyServiceTest {
+class CompanyServiceTest {
     @InjectMocks
     private CompanyService companyService;
     @Mock
@@ -39,8 +40,8 @@ public class CompanyServiceTest {
     @Test
     void should_return_companies_when_get_companies_given_no_parameter() {
         // given
-        given(mockedCompanyRepository.findAll()).willReturn(
-                Arrays.asList(new Company(1, "alibaba", getEmployees())));
+        given(mockedCompanyRepository.findAll()).
+                willReturn(Collections.singletonList(new Company(1, "alibaba", getEmployees())));
         // when
         List<CompanyResponse> companies = companyService.getAllCompanies();
         // then
@@ -52,10 +53,9 @@ public class CompanyServiceTest {
     void should_return_company_when_get_company_by_id_given_id() {
         // given
         given(mockedCompanyRepository.findById(1)).willReturn(
-                Optional.of(new Company(1, "alibaba", 2,
-                        getEmployees())));
-        given(mockedCompanyResponseMapper.toCompanyResponse(any())).willReturn(new CompanyResponse(1, "alibaba", 2,
-                getEmployees()));
+                Optional.of(new Company(1, "alibaba", 2,getEmployees())));
+        given(mockedCompanyResponseMapper.toCompanyResponse(any())).
+                willReturn(new CompanyResponse(1, "alibaba", 2, getEmployees()));
         // when
         CompanyResponse company = companyService.getCompanyById(1);
         // then
@@ -65,12 +65,11 @@ public class CompanyServiceTest {
     @Test
     void should_return_company_when_add_company_given_company() {
         // given
-        Company company = new Company(1, "alibaba",
-                getEmployees());
-        given(mockedCompanyRepository.save(company)).willReturn(new Company(1, "alibaba", 2,
-                getEmployees()));
-        given(mockedCompanyResponseMapper.toCompanyResponse(any())).willReturn(new CompanyResponse(1, "alibaba", 2,
-                getEmployees()));
+        Company company = new Company(1, "alibaba", getEmployees());
+        given(mockedCompanyRepository.save(company)).
+                willReturn(new Company(1, "alibaba", 2, getEmployees()));
+        given(mockedCompanyResponseMapper.toCompanyResponse(any())).
+                willReturn(new CompanyResponse(1, "alibaba", 2, getEmployees()));
         // when
         CompanyResponse newCompany = companyService.addCompany(company);
         // then
