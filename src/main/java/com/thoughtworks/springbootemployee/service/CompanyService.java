@@ -10,6 +10,7 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +43,7 @@ public class CompanyService {
         return companyResponseMapper.toCompanyResponse(companyRepository.save(company));
     }
 
+    @Transactional
     public void deleteCompanyById(Integer id) throws NoSuchDataException {
         Company company = companyRepository.findById(id).orElse(null);
         if (Objects.isNull(company)) {

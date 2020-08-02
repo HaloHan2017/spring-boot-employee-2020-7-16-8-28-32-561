@@ -12,7 +12,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -30,6 +32,7 @@ public class EmployeeService {
         this.employeeResponseMapper = employeeResponseMapper;
     }
 
+    @Transactional
     public EmployeeResponse updateEmployeeById(int id, Employee updatedEmployee) throws NoSuchDataException {
         EmployeeResponse employeeResponse = employeeResponseMapper.toEmployeeResponse(employeeRepository.findById(id).orElse(null));
         if (Objects.isNull(employeeResponse)) {
@@ -49,6 +52,7 @@ public class EmployeeService {
             List<Employee> employees = companyResponse.getEmployees();
             employees.add(updatedEmployee);
             companyResponse.setEmployees(employees);
+            companyResponse.setEmployeesNumber(employees.size());
             Company company = new Company();
             BeanUtils.copyProperties(companyResponse, company);
             companyService.addCompany(company);
@@ -82,7 +86,7 @@ public class EmployeeService {
             Page<Employee> employeePages = employeeRepository.findAll(PageRequest.of(page - 1, pageSize));
             return employeePages.stream().map(employeePage -> employeeResponseMapper.toEmployeeResponse(employeePage)).collect(Collectors.toList());
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public List<EmployeeResponse> getAllEmployees() {
