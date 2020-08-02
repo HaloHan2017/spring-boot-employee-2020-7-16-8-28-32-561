@@ -6,10 +6,12 @@ import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.mapper.CompanyResponseMapper;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -19,10 +21,12 @@ public class CompanyService {
 
     private CompanyRepository companyRepository;
     private CompanyResponseMapper companyResponseMapper;
+    private EmployeeRepository employeeRepository;
 
-    public CompanyService(CompanyRepository companyRepository, CompanyResponseMapper companyResponseMapper) {
+    public CompanyService(CompanyRepository companyRepository, CompanyResponseMapper companyResponseMapper, EmployeeRepository employeeRepository) {
         this.companyRepository = companyRepository;
         this.companyResponseMapper = companyResponseMapper;
+        this.employeeRepository = employeeRepository;
     }
 
     public List<CompanyResponse> getAllCompanies() {
@@ -44,22 +48,15 @@ public class CompanyService {
             throw new NoSuchDataException();
         }
         companyRepository.deleteById(id);
+        employeeRepository.deleteByCompanyId(id);
     }
 
-    public List<CompanyResponse> getCompaniesByRange(int page, int pageSize) {
+    public List<CompanyResponse> getCompaniesByRange(Integer page, Integer pageSize) {
         if (page < 0 || pageSize <= 0) {
-            return null;
+            return Collections.emptyList();
         }
-        Page<Company> companyPages = companyRepository.findAll(PageRequest.of(page, pageSize));
+        Page<Company> companyPages = companyRepository.findAll(PageRequest.of(page - 1, pageSize));
         return companyPages.stream().map(companyPage -> companyResponseMapper.toCompanyResponse(companyPage)).collect(Collectors.toList());
-    }
-
-    public List<CompanyResponse> getCompaniesByConditions(Integer page, Integer pageSize) {
-        List<Company> companies = companyRepository.findAll();
-        if (Objects.nonNull(page) && Objects.nonNull(pageSize)) {
-            companies = companyRepository.findAll(PageRequest.of(page, pageSize)).getContent();
-        }
-        return companies.stream().map(company -> companyResponseMapper.toCompanyResponse(company)).collect(Collectors.toList());
     }
 
     public CompanyResponse updateCompanyById(Integer id, Company updateCompany) throws IllegalOperationException {

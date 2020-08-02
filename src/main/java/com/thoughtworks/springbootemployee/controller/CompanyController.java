@@ -22,9 +22,14 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<CompanyResponse> getCompaniesByConditions(@RequestParam(value = "page", required = false) Integer page,
-                                                          @RequestParam(value = "pageSize", required = false) Integer pageSize) {
-        return companyService.getCompaniesByConditions(page, pageSize);
+    public List<CompanyResponse> getAllCompanies() {
+        return companyService.getAllCompanies();
+    }
+
+    @GetMapping(params = {"page", "pageSize"})
+    public List<CompanyResponse> getCompaniesByPage(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                    @RequestParam(value = "pageSize", defaultValue = "3") Integer pageSize) {
+        return companyService.getCompaniesByRange(page, pageSize);
     }
 
     @GetMapping("/{companyId}")
